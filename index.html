@@ -23,14 +23,14 @@ body{margin:0;background:linear-gradient(145deg,var(--bg1),var(--bg2));font-fami
 .dot.active{background:var(--purple)} .dot.done{background:var(--green)}
 .card,.welcome,.finish,.question{background:white;border-radius:36px;padding:20px 18px 22px;box-shadow:0 14px 35px #1d2b3a12;text-align:center}
 .step{color:var(--muted);font-size:17px;font-weight:900;letter-spacing:.04em;margin-bottom:12px}
-.photo{width:100%;height:300px;border-radius:24px;object-fit:contain;display:block;padding:6px;background:#eef1f7}
+.photo{width:100%;height:380px;border-radius:24px;object-fit:contain;display:block;padding:4px;background:#eef1f7;box-shadow:inset 0 0 0 1px #e2e6ef}
 .name{font-size:38px;font-weight:900;margin:18px 0 4px}
 .hint{font-size:20px;color:var(--muted);margin-bottom:20px}
 .label{font-size:15px;font-weight:900;color:var(--muted);letter-spacing:.05em}
 .stepTimer{font-size:40px;font-weight:900;margin:4px 0 18px}
 button{width:100%;border:0;border-radius:28px;padding:19px 16px;font-size:25px;font-weight:900;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .doneBtn{background:var(--green);color:white}
-.skipBtn{background:#eef0f6;color:var(--ink);margin-top:12px}
+.skipBtn{background:#eef0f6;color:var(--ink);margin-top:12px}.backBtn{background:#f5f3ff;color:var(--ink);margin-top:12px;font-size:20px;padding:14px 16px}
 .startBtn,.againBtn{background:var(--purple);color:white}
 .welcome,.finish{padding:30px 22px}
 .big{font-size:72px;line-height:1;margin:8px}
@@ -47,7 +47,7 @@ button{width:100%;border:0;border-radius:28px;padding:19px 16px;font-size:25px;f
 .question h3{font-size:25px;margin:0 0 12px}
 .questionText{font-size:22px;line-height:1.35;margin:12px 0 16px}
 .smallBtn{background:#f0eefb;color:var(--ink);font-size:18px;padding:13px 14px}
-@media(max-width:430px){.app{padding:10px 14px 26px}.header h1{font-size:32px}.photo{height:290px}.name{font-size:35px}}
+@media(max-width:430px){.app{padding:10px 14px 26px}.header h1{font-size:32px}.photo{height:360px}.name{font-size:35px}}
 </style>
 </head>
 <body>
@@ -78,6 +78,7 @@ button{width:100%;border:0;border-radius:28px;padding:19px 16px;font-size:25px;f
     <div id="stepTimer" class="stepTimer">00:00</div>
     <button id="done" class="doneBtn">✓ KLAR!</button>
     <button id="skip" class="skipBtn">Hoppa över</button>
+    <button id="back" class="backBtn">← Tillbaka</button>
   </section>
 
   <section id="question" class="question hidden">
@@ -147,11 +148,21 @@ function next(skipped){
     $('results').innerHTML=times.map((x,n)=>'<div class="result"><span>'+(n+1)+'. '+x.name+(x.skipped?' (hoppad över)':'')+'</span><b>'+fmt(x.ms)+'</b></div>').join('')+'<div class="result total"><span>Total tid</span><b>'+fmt(Date.now()-totalStart)+'</b></div>';
   }else{stepStart=Date.now();render();}
 }
+function goBack(){
+  if(i===0){
+    clearInterval(timer);timer=null;totalStart=null;stepStart=null;
+    $('stepCard').classList.add('hidden');$('question').classList.add('hidden');$('finish').classList.add('hidden');$('welcome').classList.remove('hidden');
+    $('total').textContent='00:00';$('bar').style.width='0%';$('progressText').textContent='Redo?';$('percent').textContent='0%';i=0;times=[];drawDots();return;
+  }
+  if(times.length>0)times.pop();
+  i--;stepStart=Date.now();render();
+}
 $('start').onclick=startRoutine;
 $('done').onclick=()=>next(false);
 $('skip').onclick=()=>next(true);
+$('back').onclick=goBack;
 $('newQuestion').onclick=showQuestion;
-$('again').onclick=()=>{ $('finish').classList.add('hidden'); $('question').classList.add('hidden'); $('welcome').classList.remove('hidden'); $('total').textContent='00:00'; $('bar').style.width='0%'; $('progressText').textContent='Redo?'; $('percent').textContent='0%'; i=0;drawDots(); };
+$('again').onclick=()=>{ $('finish').classList.add('hidden'); $('question').classList.add('hidden'); $('welcome').classList.remove('hidden'); $('total').textContent='00:00'; $('bar').style.width='0%'; $('progressText').textContent='Redo?'; $('percent').textContent='0%'; i=0;times=[];drawDots(); };
 drawDots();
 </script>
 </body>
