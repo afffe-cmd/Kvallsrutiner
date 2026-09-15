@@ -7,47 +7,71 @@
 <title>Kvällsrutiner</title>
 <style>
 *{box-sizing:border-box}
-:root{--night:#173c78;--purple:#6c63d9;--green:#63b77a;--ink:#26324a;--muted:#687890;--bg1:#f8f6ff;--bg2:#eafaff}
-body{margin:0;background:linear-gradient(145deg,var(--bg1),var(--bg2));font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
-.app{max-width:680px;margin:auto;min-height:100vh;padding:14px 16px 30px}
-.header{text-align:center;padding:4px 0 10px}
-.header h1{margin:0;font-size:36px;line-height:1.1}
-.subtitle{color:var(--muted);font-size:17px;margin-top:4px}
-.timer{display:inline-flex;align-items:center;gap:10px;background:white;border-radius:28px;padding:12px 24px;margin:8px 0 16px;box-shadow:0 8px 24px #1d2b3a12}
-.timer .emoji{font-size:34px} .timer strong{font-size:42px;line-height:1}
-.progress{height:11px;background:#dedbf0;border-radius:99px;overflow:hidden}
+:root{--night:#173c78;--purple:#6c63d9;--green:#63c985;--ink:#172943;--muted:#66778f;--bg:#edfaff}
+html,body{margin:0;min-height:100%;background:linear-gradient(145deg,#f8f6ff,#eafaff);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
+body{overflow-x:hidden}
+.app{max-width:760px;margin:auto;min-height:100vh;padding:0 12px 24px}
+.header{color:white;text-align:center;background:linear-gradient(135deg,#173c78,#07559c);border-radius:0 0 28px 28px;padding:18px 14px 14px;box-shadow:0 8px 24px #173c7828}
+.header h1{margin:0;font-size:36px;line-height:1.05;font-weight:900}
+.subtitle{font-size:15px;margin-top:5px;color:#eef7ff}
+.timer{display:none}
+.progress{height:9px;background:#dfe4ef;border-radius:99px;overflow:hidden;margin:12px 2px 0}
 .bar{height:100%;width:0;background:var(--purple);transition:width .25s}
-.info{display:flex;justify-content:space-between;margin:12px 0 14px;font-weight:800;color:var(--muted);font-size:17px}
-.dots{display:flex;justify-content:center;gap:10px;margin:8px 0 22px}
-.dot{width:28px;height:28px;border-radius:50%;background:#dddff0}
+.info{display:flex;justify-content:space-between;margin:8px 3px 10px;font-weight:800;color:var(--muted);font-size:14px}
+.dots{display:flex;justify-content:center;gap:7px;margin:8px 0 10px}
+.dot{width:12px;height:12px;border-radius:50%;background:#d8ddea}
 .dot.active{background:var(--purple)} .dot.done{background:var(--green)}
-.card,.welcome,.finish,.question{background:white;border-radius:36px;padding:20px 18px 22px;box-shadow:0 14px 35px #1d2b3a12;text-align:center}
-.step{color:var(--muted);font-size:17px;font-weight:900;letter-spacing:.04em;margin-bottom:12px}
-.photo{width:100%;height:380px;border-radius:24px;object-fit:contain;display:block;padding:4px;background:#eef1f7;box-shadow:inset 0 0 0 1px #e2e6ef}
-.name{font-size:38px;font-weight:900;margin:18px 0 4px}
-.hint{font-size:20px;color:var(--muted);margin-bottom:20px}
-.label{font-size:15px;font-weight:900;color:var(--muted);letter-spacing:.05em}
-.stepTimer{font-size:40px;font-weight:900;margin:4px 0 18px}
-button{width:100%;border:0;border-radius:28px;padding:19px 16px;font-size:25px;font-weight:900;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.doneBtn{background:var(--green);color:white}
-.skipBtn{background:#eef0f6;color:var(--ink);margin-top:12px}.backBtn{background:#f5f3ff;color:var(--ink);margin-top:12px;font-size:20px;padding:14px 16px}
+.card,.welcome,.finish,.question{background:white;border-radius:30px;padding:14px 14px 18px;box-shadow:0 14px 35px #1d2b3a14;text-align:center}
+.step{color:var(--muted);font-size:14px;font-weight:900;letter-spacing:.03em;margin:2px 0 8px}
+.stepNav{display:flex;gap:6px;overflow:hidden;margin:2px 0 12px}
+.stepNav span{flex:1;min-width:0;padding:8px 3px 7px;border-radius:16px;background:#edf0f6;color:#607089;font-size:11px;font-weight:800;line-height:1.05}
+.stepNav span.active{background:#c9f2d8;color:#10253e}
+.stepNav b{display:block;font-size:17px;margin-bottom:2px}
+.scene{position:relative;width:100%;height:min(52vh,470px);min-height:330px;border-radius:24px;overflow:hidden;background:#eaf0f4;box-shadow:inset 0 0 0 1px #dfe5ed}
+.scene::before{content:"";position:absolute;inset:-25px;background-image:var(--scene);background-size:cover;background-position:center;filter:blur(20px);transform:scale(1.12);opacity:.38}
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:8px;display:block}
+.name{font-size:31px;font-weight:900;margin:13px 0 2px}
+.hint{font-size:17px;color:var(--muted);margin-bottom:12px}
+.label{font-size:12px;font-weight:900;color:var(--muted);letter-spacing:.05em}
+.stepTimer{font-size:34px;font-weight:900;margin:2px 0 12px}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px}
+button{width:100%;border:0;border-radius:22px;padding:15px 12px;font-size:20px;font-weight:900;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.doneBtn{background:var(--green);color:white;grid-column:1/-1;font-size:25px;padding:17px}
+.skipBtn{background:#eef0f6;color:var(--ink);margin:0}
+.backBtn{background:#f5f3ff;color:var(--ink);margin:0;font-size:18px;padding:14px}
 .startBtn,.againBtn{background:var(--purple);color:white}
-.welcome,.finish{padding:30px 22px}
-.big{font-size:72px;line-height:1;margin:8px}
-.welcome h2,.finish h2{font-size:34px;margin:12px 0}
-.welcome p,.finish p{font-size:20px;color:var(--muted);line-height:1.4}
+.welcome,.finish{padding:28px 20px}
+.big{font-size:64px;line-height:1;margin:8px}
+.welcome h2,.finish h2{font-size:32px;margin:12px 0}
+.welcome p,.finish p{font-size:19px;color:var(--muted);line-height:1.4}
 .hidden{display:none}
-.results{text-align:left;margin-top:24px}
-.result{display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid #e6e8ee;font-size:18px}
+.results{text-align:left;margin-top:20px}
+.result{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #e6e8ee;font-size:17px}
 .result b:last-child{white-space:nowrap}
-.total{font-size:22px;font-weight:900}
-.footer{text-align:center;color:var(--muted);font-size:16px;margin-top:22px}
-.note{background:#f1f3fb;border-radius:20px;padding:12px 14px;margin:16px 0;color:var(--muted);font-weight:700}
-.question{margin-top:18px;padding:20px 18px}
-.question h3{font-size:25px;margin:0 0 12px}
-.questionText{font-size:22px;line-height:1.35;margin:12px 0 16px}
-.smallBtn{background:#f0eefb;color:var(--ink);font-size:18px;padding:13px 14px}
-@media(max-width:430px){.app{padding:10px 14px 26px}.header h1{font-size:32px}.photo{height:360px}.name{font-size:35px}}
+.total{font-size:21px;font-weight:900}
+.footer{text-align:center;color:var(--muted);font-size:15px;margin-top:18px}
+.note{background:#f1f3fb;border-radius:18px;padding:12px 14px;margin:15px 0;color:var(--muted);font-weight:700}
+.question{margin-top:14px;padding:17px 16px;background:#fffdf2;border:1px solid #f1df8d}
+.question h3{font-size:22px;margin:0 0 8px}
+.questionText{font-size:20px;line-height:1.35;margin:8px 0 12px}
+.smallBtn{background:#f0eefb;color:var(--ink);font-size:17px;padding:11px 13px}
+@media(max-width:430px){
+ .app{padding:0 8px 18px}
+ .header{padding:15px 10px 12px;border-radius:0 0 22px 22px}
+ .header h1{font-size:31px}
+ .subtitle{font-size:13px}
+ .card{padding:10px 9px 14px;border-radius:25px}
+ .stepNav{gap:4px;margin-bottom:9px}
+ .stepNav span{padding:7px 2px 6px;font-size:9px;border-radius:13px}
+ .stepNav b{font-size:15px}
+ .scene{height:49vh;min-height:300px;border-radius:20px}
+ .photo{padding:5px;max-width:100%}
+ .name{font-size:29px;margin:10px 0 1px}
+ .hint{font-size:16px;margin-bottom:8px}
+ .stepTimer{font-size:32px;margin-bottom:9px}
+ button{padding:13px 10px;font-size:18px}
+ .doneBtn{font-size:23px;padding:15px}
+}
 </style>
 </head>
 <body>
@@ -71,14 +95,17 @@ button{width:100%;border:0;border-radius:28px;padding:19px 16px;font-size:25px;f
 
   <section id="stepCard" class="card hidden">
     <div id="step" class="step">STEG 1 AV 7</div>
-    <img id="stepImage" class="photo" alt="">
+    <div id="stepNav" class="stepNav"></div>
+    <div id="scene" class="scene"><img id="stepImage" class="photo" alt=""></div>
     <div id="name" class="name"></div>
     <div id="hint" class="hint"></div>
     <div class="label">TID PÅ DET HÄR STEGET</div>
     <div id="stepTimer" class="stepTimer">00:00</div>
-    <button id="done" class="doneBtn">✓ KLAR!</button>
-    <button id="skip" class="skipBtn">Hoppa över</button>
-    <button id="back" class="backBtn">← Tillbaka</button>
+    <div class="controls">
+      <button id="skip" class="skipBtn">Hoppa över</button>
+      <button id="back" class="backBtn">← Tillbaka</button>
+      <button id="done" class="doneBtn">✓ KLAR!</button>
+    </div>
   </section>
 
   <section id="question" class="question hidden">
@@ -109,6 +136,9 @@ const fmt=ms=>{let s=Math.floor(ms/1000),m=Math.floor(s/60);s%=60;return String(
 function drawDots(){
   $('dots').innerHTML=steps.map((_,n)=>'<span class="dot '+(n<i?'done':n===i?'active':'')+'"></span>').join('');
 }
+function drawStepNav(){
+  $('stepNav').innerHTML=steps.map((x,n)=>'<span class="'+(n===i?'active':'')+'"><b>'+(n+1)+'</b>'+x.name.replace(' + ',' +<br>')+'</span>').join('');
+}
 function tick(){
   if(!totalStart)return;
   $('total').textContent=fmt(Date.now()-totalStart);
@@ -118,6 +148,8 @@ function render(){
   $('step').textContent='STEG '+(i+1)+' AV '+steps.length;
   $('stepImage').src=steps[i].img;
   $('stepImage').alt=steps[i].name;
+  $('scene').style.setProperty('--scene','url("'+steps[i].img+'")');
+  drawStepNav();
   $('name').textContent=steps[i].name;
   $('hint').textContent=steps[i].hint;
   const pct=Math.round(i/steps.length*100);
